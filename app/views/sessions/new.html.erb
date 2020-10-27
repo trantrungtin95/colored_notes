@@ -1,0 +1,34 @@
+<div class="login_form">
+    <% if flash[:alert] %>
+        <p id="notice"><%= flash[:alert] %></p>
+    <% end %>
+  
+    <% if notice %>
+        <p id="notice"><%= notice %></p>
+    <% end %>
+    <%= form_tag '/login', method: :post do %>
+        <fieldset class="form-input">
+            <legend>Log In</legend>
+  
+            <div>
+                <label for="name">Name:</label>
+            </div>
+            <div>
+                <%= text_field_tag :name, params[:name] %>
+            </div>
+  
+            <div>
+                <label for="password">Password:</label>
+            </div>
+            <div>
+                <%= password_field_tag :password, params[:password] %>
+            </div>
+  
+            <div>
+                <%= submit_tag "Login", class:'form-button' %>
+                <%= link_to 'New User', new_user_path %>
+            </div>
+        </fieldset>
+    <% end %>
+</div>
+
