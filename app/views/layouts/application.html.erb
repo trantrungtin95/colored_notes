@@ -9,6 +9,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://sortablejs.github.io/sortablejs/Sortable.js"></script>
+  <script style="text/javascript" src="https://sortablejs.github.io/sortablejs/st/prettify/prettify.js"></script>
+  <script src="https://sortablejs.github.io/sortablejs/st/app.js"></script>
   <%= javascript_pack_tag 'application'%>
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */ 
@@ -102,7 +105,9 @@
 </div>
 
 <footer class="container-fluid text-center">
-  <p><%= @current_user.email%></p>
+  <% if !@current_user.nil?%>
+    <p><%= @current_user.email%></p>
+  <% end %>
 </footer>
 </body>
 </html>
@@ -113,5 +118,22 @@
       $('li[name="tab"]').removeClass('active');
       $(event.target).parent().addClass('active');
     })
-  })
+  });
+  $('body').on('change', '.color-select', function(event) {
+        var newColor = $(event.target).val();
+        var noteId = $(event.target).attr('id').split('-')[1];
+        var userId = $('#user-id').data('id');
+        $.get(`/users/${userId}/notes/${noteId}/color`, { color: newColor }, function(data) {
+                console.log();
+        } );
+    });
+    
+    $(document).on('focusout', "input[name='note[title]']",  function(e){
+        form = document.querySelector('.edit_note');
+        form.dispatchEvent(new Event('submit', {bubbles: true}));
+    });
+    $(document).on('focusout', "textarea[name='content']",  function(e){
+        form = document.querySelector('.edit_line_item');
+        form.dispatchEvent(new Event('submit', {bubbles: true}));
+    });
 </script>

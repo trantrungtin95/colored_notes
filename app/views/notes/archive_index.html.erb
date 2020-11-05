@@ -13,15 +13,3 @@
 </div>
 
 <br>
-<script>
-     $('.color-select').on('change', function(event) {
-        var newColor = $(event.target).val();
-        var noteId = $(event.target).attr('id').split('-')[1];
-        var userId = $('#user-id').data('id');
-        $.get(`/users/${userId}/notes/${noteId}/color`, { color: newColor }, function(data) {
-                note = data;
-                console.log(data);
-                location.reload();
-        } );
-    });
-</script>

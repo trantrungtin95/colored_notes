@@ -25,7 +25,6 @@ class NotesController < ApplicationController
     end
 
     def update
-        debugger
         if note_params[:title].strip.present?
             @note.update(note_params)
         else

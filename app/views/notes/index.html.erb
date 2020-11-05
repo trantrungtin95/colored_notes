@@ -42,15 +42,4 @@
             }
         });
     } );
-    $('body').on('change', '.color-select', function(event) {
-        var newColor = $(event.target).val();
-        var noteId = $(event.target).attr('id').split('-')[1];
-        var userId = $('#user-id').data('id');
-        $.get(`/users/${userId}/notes/${noteId}/color`, { color: newColor }, function(data) {
-                console.log();
-        } );
-    });
-    $(document).ready( "input[name='note[title]']" ).focusout(function() {
-        alert("1")
-    });
 </script>
