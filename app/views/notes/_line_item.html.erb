@@ -1,0 +1,18 @@
+<div class="line-item-<%= line_item.id %>" style="
+padding-left: 20px;
+background-color: yellow;
+border-radius: 100px;
+box-sizing: border-box;
+display: flex;
+flex-direction: column;
+position: relative;
+white-space: normal;">
+    <div style="display: inline;">
+        <strong style="display: inline;"><%= link_to line_item.content, 
+        edit_line_item_user_note_path(@current_user, note, line_item_id: line_item.id ),
+        remote: :true %></strong>
+        <div style="display: inline;">
+            <%= link_to "Destroy", destroy_line_item_user_note_path(@current_user, note, line_item_id: line_item.id )%>
+        </div>
+    </div>
+</div>

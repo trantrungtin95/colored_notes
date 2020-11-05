@@ -1,0 +1,4 @@
+$('.add-line-item-<%= @note.id %>').html('<%= j(render('new_line_item')) %>');
+<% if !@line_item.nil?%>
+    $('.list-line-items-<%= @note.id %>').prepend('<%= j(render('line_item', line_item: @line_item, note: @note)) %>')
+<% end %>

@@ -1,0 +1,11 @@
+<%= form_with url: add_line_item_user_note_path(@current_user, @note), method: :post, remote: :true do |form| %>
+    <fieldset style='width: 295px'>
+        <div class="field">
+            <%= form.label :content, 'Content' %>
+            <%= form.text_area :content, size: 80 %>
+        </div>
+        <div class="actions">
+            <%= form.submit %>
+        </div>
+  </fieldset>
+<% end %>

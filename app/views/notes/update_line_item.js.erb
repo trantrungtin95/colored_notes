@@ -1,0 +1,5 @@
+<% if !params[:content].strip.present?%>
+    $('.line-item-<%= @line_item.id %>').empty();
+<% else %>
+    $('.line-item-<%= @line_item.id %>').html('<%= j(render('line_item', line_item: @line_item, note: @note)) %>');
+<% end %>

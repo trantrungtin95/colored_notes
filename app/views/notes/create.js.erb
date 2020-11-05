@@ -1,0 +1,5 @@
+$('form.new_note').html('<%= j(render('new_note')) %>');
+<% if !@note.title.strip.present? %>
+<% else %>
+    $('.list-notes').prepend('<%= j(render('note', note: @note)) %>')
+<% end %>

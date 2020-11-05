@@ -1,0 +1,2 @@
+$('.edit-<%= @note.id%>').empty();
+$('.note-title-<%= @note.id %>').html('<%= j(render('form_edit')) %>');

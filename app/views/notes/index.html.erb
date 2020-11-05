@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+<h1>List Notes</h1>
+<div id="user-id" data-id="<%= @current_user.id %>"></div>
+<div id="new-note">
+    <%= link_to 'New Note', new_user_note_path(@current_user), remote: :true%>
+</div>
+<hr />
+    <% if !@notes.nil?%>
+        <% if @notes.where(pin: "on").present? %>
+            <strong>Được Ghim:</strong>
+            <% @notes.where(pin: "on").order('updated_at desc').each do |note| %>
+                <%= render 'note', note: note %>
+            <% end %>
+            <hr />
+            <strong>Khác:</strong>
+            <div class="list-notes" style="height: 480px; overflow: scroll;">
+                <% @notes.where(pin: "off").order('created_at desc').each do |note| %>
+                    <%= render 'note', note: note %>
+                <% end %>
+            </div>
+        <% else %>
+            <div class="list-notes" style="height: 480px; overflow: scroll;">
+                <% @notes.each do |note| %>
+                    <%= render 'note', note: note %>
+                <% end %>
+            </div>
+        <% end %>
+    <% end %>
+
+<br>
+<script>
+    $('body').ready(function() {
+        $('.list').draggable({
+            scroll: true,
+            axis: "y",
+            containment: 'div[class="list-notes"]',
+            revert: false,
+            helper: "orginal",
+            disable: false,
+            stop: function(event, ui) { 
+                console.log(ui.position);
+            }
+        });
+    } );
+    $('body').on('change', '.color-select', function(event) {
+        var newColor = $(event.target).val();
+        var noteId = $(event.target).attr('id').split('-')[1];
+        var userId = $('#user-id').data('id');
+        $.get(`/users/${userId}/notes/${noteId}/color`, { color: newColor }, function(data) {
+                console.log();
+        } );
+    });
+    $(document).ready( "input[name='note[title]']" ).focusout(function() {
+        alert("1")
+    });
+</script>

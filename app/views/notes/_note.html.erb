@@ -1,0 +1,61 @@
+<div class="note-<%= note.id %>">
+    <% if note.pin == "on" %>
+    <div style="
+        background-color: <%= note.color%>;
+        border-radius: 3px;
+        border: double;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
+        position: relative;
+        white-space: normal;">
+    <% else %>
+    <div class="list js-list-content" style="
+        background-color: <%= note.color%>;
+        border-radius: 3px;
+        border: double;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
+        position: relative;
+        white-space: normal;">
+    <% end %>
+        <div class="note-title-<%= note.id %>">
+            <strong><%= link_to note.title, edit_user_note_path(@current_user, note), remote: :true %></strong>
+        </div>
+            <div>
+                <div class="add-line-item-<%= note.id %>" style="display: inline;">
+                    <%= button_to "Add Item",new_line_item_user_note_path(@current_user, note), method: :get, remote: :true %>
+                </div>
+            </div>
+            <div class="list-line-items-<%= note.id %>">
+                <% note.line_items.order('created_at desc').each do |line_item| %>
+                    <%= render 'line_item', line_item: line_item, note: note %>
+                <% end %>
+            </div>
+        <div>
+            <div class="pin" style="display: inline;">
+                <% if note.pin == "off" %>
+                    <%= button_to "Pin", pin_user_note_path(@current_user, note), method: :get %>
+                <% else %>
+                    <%= button_to "Un Pin", unpin_user_note_path(@current_user, note), method: :get %>
+                <% end %>
+            </div>
+            <div class="archive" style="display: inline;">
+                <% if note.archive == "off"%>
+                    <%= button_to "Archive", archive_user_note_path(@current_user, note), method: :get %>
+                <% else %>
+                    <%= button_to "Un Archive", unarchive_user_note_path(@current_user, note), method: :get %>
+                <% end %>
+            </div>
+            <div class="color" style="display: inline;">
+                <%= render "form_color", note: note %>
+            </div>
+            <div class="destroy" style="display: inline;">
+                <%= button_to 'Destroy', user_note_path(@current_user, note), method: :delete %>
+            </div>
+        </div>
+    </div>
+</div>

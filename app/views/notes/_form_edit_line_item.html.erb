@@ -1,0 +1,11 @@
+<%= form_with url: update_line_item_user_note_path(@current_user, @note, line_item_id: @line_item.id), method: :patch, remote: :true do |form| %>
+    <fieldset style='width: 295px'>
+        <div class="field">
+            <%= form.label :content, 'Content' %>
+            <%= form.text_area :content, size: 80, value: "#{@line_item.content}" %>
+        </div>
+        <div class="actions">
+            <%= form.submit %>
+        </div>
+  </fieldset>
+<% end %>

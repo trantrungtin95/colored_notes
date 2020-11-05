@@ -1,0 +1,15 @@
+<form action="/users/<%= @current_user.id %>/notes/<%= note.id %>/color" style="display: inline;">
+  <label for="color"></label>
+  <select id="color-<%= note.id %>" name="color" class='color-select'>
+    <option value="#ebecf0">Choose a color:</option>
+    <option value="#ebecf0">Default</option>
+    <option value="blue">Blue</option>
+    <option value="white">White</option>
+    <option value="red">Red</option>
+    <option value="yellow">Yellow</option>
+    <option value="aquamarine">Aquamarine</option>
+    <option value="antiquewhite">Antiquewhite</option>
+  </select>
+  <input type="submit" style="display: none;">
+</form>
+
