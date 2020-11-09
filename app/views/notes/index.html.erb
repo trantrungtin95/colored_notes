@@ -26,20 +26,50 @@
             </div>
         <% end %>
     <% end %>
-
+    
 <br>
 <script>
-    $('body').ready(function() {
-        $('.list').draggable({
-            scroll: true,
-            axis: "y",
-            containment: 'div[class="list-notes"]',
-            revert: false,
-            helper: "orginal",
-            disable: false,
+    $(".list-notes").sortable({
+            // scroll: true,
+            // axis: "y",
+            containment: ".list-notes",
+            // revert: false,
+            // helper: "orginal",
+            disabled: false,
+            start: function(event, ui) { 
+                window.position = $(ui.item).position().top;
+            },
             stop: function(event, ui) { 
-                console.log(ui.position);
+                var userId = $('#user-id').data('id');
+                var positionNew = $(ui.item).position().top;
+                var noteId = $(ui.item).data("id")
+                var nextNoteId = $(ui.item[0].nextElementSibling).data("id")
+                $.get(`/users/${userId}/notes/set_index`, { position: window.position, newposition: positionNew, note_id: noteId, nextnote_id: nextNoteId }, function(data) {
+                    location.reload()
+                } );
+                console.log(window.position, positionNew, noteId, nextNoteId);
             }
         });
-    } );
+     $('body').on('change', '.color-select', function(event) {
+        var newColor = $(event.target).val();
+        var noteId = $(event.target).attr('id').split('-')[1];
+        var userId = $('#user-id').data('id');
+        $.get(`/users/${userId}/notes/${noteId}/color`, { color: newColor }, function(data) {
+                console.log();
+        } );
+    });
+    // $(document).ready(function () {
+    //     $("input[name='note[title]']").focus(function () {
+    //         var that = this;
+    //         setTimeout(function(){ that.selectionStart = that.selectionEnd = 10000; }, 0);
+    //     });
+    // }
+    $(document).on('focusout', "input[name='note[title]']",  function(e){
+        form = document.querySelector('.edit_note');
+        form.dispatchEvent(new Event('submit', {bubbles: true}));
+    });
+    $(document).on('focusout', "textarea[name='content']",  function(e){
+        form = document.querySelector('.edit_line_item');
+        form.dispatchEvent(new Event('submit', {bubbles: true}));
+    });
 </script>

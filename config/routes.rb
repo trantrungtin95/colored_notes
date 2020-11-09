@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       get :unarchive, on: :member
       get :archive_index, on: :collection
       get :color, on: :member
+      get :set_index, on: :collection
     end 
     # get :destroy_note, on: :collection
   end

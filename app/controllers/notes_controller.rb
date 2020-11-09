@@ -3,7 +3,7 @@ class NotesController < ApplicationController
     before_action :set_note, only: [:show, :edit, :update, :destroy]
 
     def index
-        @notes = Note.where(user_id: params[:user_id], archive: "off").order('created_at desc')
+        @notes = Note.where(user_id: params[:user_id], archive: "off").order('index asc')
     end
 
     def show
@@ -20,7 +20,11 @@ class NotesController < ApplicationController
     def create
         @note = Note.new(note_params)
         if note_params[:title].strip.present?
-        @note.save
+            Note.all.each do |note|
+                newindex = note.index + 1
+                note.update(index: newindex)
+            end 
+            @note.update(index: 0)
         end
     end
 
@@ -102,6 +106,38 @@ class NotesController < ApplicationController
     def color
         @note = Note.find(params[:id])
         @note.update(color: params[:color])
+    end 
+
+    def set_index
+        if params[:newposition] > params[:position]
+            notestart = Note.find(params[:note_id])
+            indexstart = notestart.index + 1
+            if params[:nextnote_id].nil?
+                notes = Note.all.order('index asc').where(index: [indexstart...nil])
+            else
+                noteend = Note.find(params[:nextnote_id])
+                indexend = noteend.index
+                notes = Note.all.order('index asc').where(index: [indexstart...indexend])
+            end
+            notes.each do |note|
+                newindex = note.index - 1
+                note.update(index: newindex)
+            end
+            n = notes.last.index + 1
+            notestart.update(index: n)
+        elsif params[:newposition] < params[:position]
+            notestart = Note.find(params[:nextnote_id])
+            indexstart = notestart.index
+            noteend = Note.find(params[:note_id])
+            indexend = noteend.index
+            notes = Note.all.order('index asc').where(index: [indexstart...indexend])
+            notes.each do |note|
+                newindex = note.index + 1
+                note.update(index: newindex)
+            end
+            n = notes.first.index - 1
+            noteend.update(index: n)
+        end
     end 
 
     private

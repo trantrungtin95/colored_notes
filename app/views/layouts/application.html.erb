@@ -119,21 +119,4 @@
       $(event.target).parent().addClass('active');
     })
   });
-  $('body').on('change', '.color-select', function(event) {
-        var newColor = $(event.target).val();
-        var noteId = $(event.target).attr('id').split('-')[1];
-        var userId = $('#user-id').data('id');
-        $.get(`/users/${userId}/notes/${noteId}/color`, { color: newColor }, function(data) {
-                console.log();
-        } );
-    });
-    
-    $(document).on('focusout', "input[name='note[title]']",  function(e){
-        form = document.querySelector('.edit_note');
-        form.dispatchEvent(new Event('submit', {bubbles: true}));
-    });
-    $(document).on('focusout', "textarea[name='content']",  function(e){
-        form = document.querySelector('.edit_line_item');
-        form.dispatchEvent(new Event('submit', {bubbles: true}));
-    });
 </script>
