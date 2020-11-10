@@ -45,7 +45,7 @@
                 var noteId = $(ui.item).data("id")
                 var nextNoteId = $(ui.item[0].nextElementSibling).data("id")
                 $.get(`/users/${userId}/notes/set_index`, { position: window.position, newposition: positionNew, note_id: noteId, nextnote_id: nextNoteId }, function(data) {
-                    location.reload()
+                    location.reload();
                 } );
                 console.log(window.position, positionNew, noteId, nextNoteId);
             }
@@ -55,7 +55,7 @@
         var noteId = $(event.target).attr('id').split('-')[1];
         var userId = $('#user-id').data('id');
         $.get(`/users/${userId}/notes/${noteId}/color`, { color: newColor }, function(data) {
-                console.log();
+                location.reload();
         } );
     });
     // $(document).ready(function () {
