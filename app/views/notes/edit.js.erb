@@ -1,12 +1,9 @@
 $('.edit-<%= @note.id%>').empty();
 $('.note-title-<%= @note.id %>').html('<%= j(render('form_edit')) %>');
-<%# $(document).on('focus', "input[name='note[title]']",  function(){
-    var x = $("input[name='note[title]']");
-    setTimeout(function(){ x.selectionStart = x.selectionEnd = 10000; }, 0);
-}); %>
-<%# $(document).ready(function () {
+<%# 
+$(document).ready(function () {
   $("input[name='note[title]']").focus(function () {
       var that = this;
     setTimeout(function(){ that.selectionStart = that.selectionEnd = 10000; }, 0);
   });
-} %>
+}); %>
