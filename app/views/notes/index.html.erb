@@ -72,4 +72,15 @@
         form = document.querySelector('.edit_line_item');
         form.dispatchEvent(new Event('submit', {bubbles: true}));
     });
+    reminder();
+    function reminder() {
+        var userId = $('#user-id').data('id');
+        $.get(`/users/${userId}/notes/reminder_notes`, function(data) {
+            console.log(data);
+            if (data != "") {
+                alert("You are having a reminder!")
+            }
+            setTimeout(reminder, 60 * 1000);
+        } );
+    }
 </script>

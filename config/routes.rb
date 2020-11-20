@@ -14,9 +14,16 @@ Rails.application.routes.draw do
       get :unpin, on: :member
       get :archive, on: :member
       get :unarchive, on: :member
+      get :reminder, on: :member
+      get :set_reminder, on: :member
       get :archive_index, on: :collection
       get :color, on: :member
       get :set_index, on: :collection
+      get :reminder_notes, on: :collection
+      get :add_tag, on: :member
+      get :create_tag, on: :member
+      get :destroy_tag, on: :member
+      get :select_tag, on: :collection
     end 
     # get :destroy_note, on: :collection
   end

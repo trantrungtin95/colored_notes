@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+<h1>List Notes</h1>
+<div id="user-id" data-id="<%= @current_user.id %>"></div>
+<div id="new-note">
+    <%= link_to 'New Note', new_user_note_path(@current_user), remote: :true%>
+</div>
+<hr />
+    <% if !@notes.nil?%>
+        <% @notes.each do |note|%>
+            <%= render 'note', note: note %>
+        <% end %>
+    <% end %>
+    
+<br>

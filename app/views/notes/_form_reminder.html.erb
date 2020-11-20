@@ -1,0 +1,5 @@
+<form data-remote="true" action="/users/<%= @current_user.id %>/notes/<%= @note.id %>/set_reminder" style="display: inline;">
+  <label for="reminder">Reminder:</label>
+  <input type="datetime-local" id="reminder" name="reminder">
+  <input type="submit">
+</form>
