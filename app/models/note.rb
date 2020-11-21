@@ -2,4 +2,6 @@ class Note < ApplicationRecord
     belongs_to :user
     has_many :line_items
     has_many :note_tags, :dependent => :destroy
+    scope :find_title, -> (search) {where "title iLIKE ?", "%#{search}%"}
+    
 end

@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
   def create
     if user = User.authenticate(params[:name], params[:password])
       session[:user_id] = user.id
+      redirect_to user_path(user)
     else
       redirect_to sessions_new_path, :alert => "Invalid username/password"
     end

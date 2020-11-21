@@ -72,6 +72,12 @@
         <li name="tab"><a href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li>
+          <form action="/users/<%= session[:user_id]%>/notes/search">
+            <label for="search"></label>
+            <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="search" style="width: 300px;">
+          </form>
+        </li>
         <% if current_user.nil? %>
           <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         <% else %>

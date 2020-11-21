@@ -24,6 +24,7 @@ Rails.application.routes.draw do
       get :create_tag, on: :member
       get :destroy_tag, on: :member
       get :select_tag, on: :collection
+      get :search, on: :collection
     end 
     # get :destroy_note, on: :collection
   end

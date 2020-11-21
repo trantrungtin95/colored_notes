@@ -200,8 +200,17 @@ class NotesController < ApplicationController
         @notes = @tag.note_tags.map(&:note)
     end
     
+    def search
+        notes1 = Note.find_title(params['search'])
+        notes2 = []
+        (Note.all - notes1).each do |note|
+            if !note.line_items.find_content(params['search']).empty?
+                notes2.push(note)
+            end
+        end
+        @notes = notes1 + notes2
+    end
     
-
     private
 
     def set_note
