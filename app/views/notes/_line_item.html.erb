@@ -8,9 +8,26 @@ flex-direction: column;
 position: relative;
 white-space: normal;">
     <div style="display: inline;">
-        <strong style="display: inline;"><%= link_to line_item.content, 
-        edit_line_item_user_note_path(@current_user, note, line_item_id: line_item.id ),
-        remote: :true %></strong>
+        <% if line_item.status == "doing"%>
+            <input type="checkbox" id="chekbox-<%= line_item.id %>" name="checkbox-line-item">
+        <% else %>
+            <input type="checkbox" id="chekbox-<%= line_item.id %>" name="checkbox-line-item" checked>
+        <% end %>
+        <% if line_item.status == "doing"%>
+            <strong style="display: inline;">
+                <%= link_to line_item.content, 
+                edit_line_item_user_note_path(@current_user, note, line_item_id: line_item.id ),
+                remote: :true %>
+            </strong>
+        <% else %>
+            <strike>
+                <strong style="display: inline;">
+                    <%= link_to line_item.content, 
+                    edit_line_item_user_note_path(@current_user, note, line_item_id: line_item.id ),
+                    remote: :true %>
+                </strong>
+            </strike>
+        <% end %>
         <div style="display: inline;">
             <%= link_to "Destroy", destroy_line_item_user_note_path(@current_user, note, line_item_id: line_item.id )%>
         </div>

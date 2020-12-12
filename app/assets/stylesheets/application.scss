@@ -12,7 +12,11 @@
  *
  *= require_tree .
  *= require_self
+ *= require font-awesome
  */
 @import "bootstrap";
 @import "scaffolds";
-@import "colored_notes"
+@import "colored_notes";
+@import "font-awesome";
+// @import "font-awesome-sprockets";
+// @import "font-awesome";

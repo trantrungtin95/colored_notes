@@ -49,21 +49,36 @@
                 } );
                 console.log(window.position, positionNew, noteId, nextNoteId);
             }
-        });
-     $('body').on('change', '.color-select', function(event) {
-        var newColor = $(event.target).val();
-        var noteId = $(event.target).attr('id').split('-')[1];
-        var userId = $('#user-id').data('id');
+    });
+    // $('body').on('change', '.color-select', function(event) {
+    //     var newColor = $(event.target).val();
+    //     var noteId = $(event.target).attr('id').split('-')[1];
+    //     var userId = $('#user-id').data('id');
+    //     $.get(`/users/${userId}/notes/${noteId}/color`, { color: newColor }, function(data) {
+    //             location.reload();
+    //     } );
+    // });
+    // $(document).ready(function () {
+    //     var c = document.getElementById("color");
+    //     c.addEventListener("input", function() {
+    //     var color = c.value;
+    //     }, false); 
+    // });
+    $(document).on('input', "input[name='color']",  function(e){
+        var newColor = this.value,
+            noteId = this.id.split('-')[1],
+            userId = $('#user-id').data('id');
         $.get(`/users/${userId}/notes/${noteId}/color`, { color: newColor }, function(data) {
-                location.reload();
+            location.reload();
         } );
     });
-    // $(document).ready(function () {
-    //     $("input[name='note[title]']").focus(function () {
-    //         var that = this;
-    //         setTimeout(function(){ that.selectionStart = that.selectionEnd = 10000; }, 0);
-    //     });
-    // }
+    $(document).on('input', "input[name='checkbox-line-item']", function(e){
+        var lineItemId = this.id.split('-')[1],
+            userId = $('#user-id').data('id');
+        $.get(`/users/${userId}/notes/status_line_item`, {line_item_id: lineItemId}, function(data) {
+            location.reload();
+        });
+    });
     $(document).on('focusout', "input[name='note[title]']",  function(e){
         form = document.querySelector('.edit_note');
         form.dispatchEvent(new Event('submit', {bubbles: true}));
@@ -83,4 +98,22 @@
             setTimeout(reminder, 60 * 1000);
         } );
     }
+
+    $(document).on('mouseover', '.collaborator', function(event) {
+        $(event.target).find('.collaborator-actions').removeClass('hidden');
+        
+    })
+
+    $(document).on('mouseleave', '.collaborator', function(event) {
+        $(event.target).find('.collaborator-actions').addClass('hidden');
+    })
+
+    $(document).on('mouseover', '.tag', function(event) {
+        $(event.target).find('.destroy-tag').removeClass('hidden');
+        
+    })
+
+    $(document).on('mouseleave', '.tag', function(event) {
+        $(event.target).find('.destroy-tag').addClass('hidden');
+    })
 </script>

@@ -62,18 +62,24 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="/users/<%= session[:user_id]%>" style="background-color: white">User</a>
+      <a class="navbar-brand" href="/users/<%= session[:user_id]%>" style="background-color: white" data-toggle="tooltip" title="User">
+        <i class="fa fa-user-circle" style="font-size:22px"></i>
+      </a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li name="tab"><a href="/">Home</a></li>
-        <li name="tab"><a href="/users/<%= session[:user_id]%>/notes">List Notes</a></li>
-        <li name="tab"><a href="/users/<%= session[:user_id]%>/notes/archive_index">Archive</a></li>
-        <li name="tab"><a href="#">Contact</a></li>
+        <li name="tab"><a href="/" data-toggle="tooltip" title="Home"><i class="fa fa-home" style="font-size:22px"></i></a></li>
+        <li name="tab">
+          <a href="/users/<%= session[:user_id]%>/notes" title="List Notes">
+            <img class="gb_ua gb_ie" src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" srcset="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png 1x, https://www.gstatic.com/images/branding/product/2x/keep_2020q4_48dp.png 2x " alt aria-hidden="true" style="width:26px;height:24px">
+          </a>
+        </li>
+        <li name="tab"><a href="/users/<%= session[:user_id]%>/notes/archive_index" title="Archive"><i class="fa fa-archive" style="font-size:22px"></i></a></li>
+        <li name="tab"><a href="/users/<%= session[:user_id]%>/notes/note_participated"><i class="fa fa-users" style="font-size:22px"></i></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-          <form action="/users/<%= session[:user_id]%>/notes/search">
+          <form action="/users/<%= session[:user_id]%>/notes/search" style="margin-top: -13px;">
             <label for="search"></label>
             <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="search" style="width: 300px;">
           </form>
@@ -102,12 +108,6 @@
       
     </div>
     <div class="col-sm-2 sidenav">
-      <div class="well">
-        <p>ADS</p>
-      </div>
-      <div class="well">
-        <p>ADS</p>
-      </div>
     </div>
   </div>
 </div>

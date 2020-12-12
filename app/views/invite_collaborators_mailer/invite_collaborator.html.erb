@@ -1,0 +1,10 @@
+<p>
+    Dear <b><%= @receiver %></b>,
+</p>
+ 
+<p>You have an invitation from <%= link_to @sender.email, invitation_users_url(note_id: @note.id, email: @receiver)%> !</p>
+<% if !@password.nil? %>
+    <p>Your account:</p>
+    <p>name: <%= @receiver %></p>
+    <p>password: <%= @password %></p>
+<% end %>

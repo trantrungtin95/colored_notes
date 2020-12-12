@@ -112,6 +112,7 @@ class NotesController < ApplicationController
     def color
         @note = Note.find(params[:id])
         @note.update(color: params[:color])
+        redirect_to user_notes_path(@current_user)
     end 
 
     def reminder
@@ -194,31 +195,72 @@ class NotesController < ApplicationController
         redirect_to user_notes_path(@current_user)
     end
     
-
+    
+    
     def select_tag
         @tag = Tag.find(params[:tag_id])
         @notes = @tag.note_tags.map(&:note)
     end
     
     def search
-        notes1 = Note.find_title(params['search'])
-        notes2 = []
-        (Note.all - notes1).each do |note|
-            if !note.line_items.find_content(params['search']).empty?
-                notes2.push(note)
-            end
-        end
-        @notes = notes1 + notes2
+        # Note amounts: 10000. memory issuse
+        # Note: search in database. Use sql: 
+        @notes = Note.left_outer_joins(:line_items)
+                .where('notes.title ilike ? or line_items.content ilike ?', 
+                    "%#{params[:search]}%", 
+                    "%#{params[:search]}%")
+                .distinct
+        # Read more: joins two tables
     end
     
-    private
+    def new_collaborator
+        @note = Note.find(params[:id])
+    end
+    
+    def create_collaborator
+        @note = Note.find(params[:id])
+        if @current_user.email == params[:email]
+            @data = "The collaborator is not yourself!"
+        else
+            if @note.note_collaborators.find_by_user_email(params[:email]).nil?
+                InviteCollaboratorsMailer.invite_collaborator(@current_user, params[:email], @note).deliver
+            else
+                @data = "This collaborator has participated!"
+            end 
+        end 
+    end
+    
+    def destroy_collaborator
+        @note_collaborator = NoteCollaborator.find(params[:note_collaborator_id])
+        @note_collaborator.destroy
+        redirect_to user_notes_path(@current_user)
+    end
+    
+    
 
+    def note_participated
+        @notes = @current_user.note_collaborators.map(&:note)
+    end
+    
+    def status_line_item
+        @line_item = LineItem.find(params[:line_item_id])
+        if @line_item.status == "doing"
+            @line_item.update(status: "done")
+        else
+            @line_item.update(status: "doing")
+        end
+
+    end
+    
+
+    private
+    
     def set_note
         @note = Note.find(params[:id])
     end
-
+    
     def note_params
-      params.require(:note).permit(:title, :user_id)
+        params.require(:note).permit(:title, :user_id)
     end
      
 end

@@ -1,5 +1,5 @@
 <% if @note.reminder.nil?%>
-    <%= button_to "Reminder", reminder_user_note_path(@current_user, @note), method: :get, remote: :true  %>
+    <a href="/users/<%= @current_user.id %>/notes/<%= @note.id %>/reminder" title="Reminder" data-remote="true"><i class="fa fa-bell-o" style="font-size:22px"></i></a>
 <% else%>
     <%= link_to "Reminder:#{@note.reminder}", reminder_user_note_path(@current_user, @note), remote: :true%>
 <% end %>

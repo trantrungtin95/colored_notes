@@ -1,0 +1,7 @@
+<p id="notice"><%= notice %></p>
+<h1>List Notes Participated</h1>
+<hr />
+    <% @notes.each do |note|%>
+        <%= render 'note', note: note %>
+    <% end %>
+<br>

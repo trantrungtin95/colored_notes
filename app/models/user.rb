@@ -2,6 +2,7 @@ require 'digest/sha2'
 
 class User < ApplicationRecord
     has_many :notes, :dependent => :destroy
+    has_many :note_collaborators, :dependent => :destroy
     has_many :tags
     validates :name, :presence => true, :uniqueness => true
     validates :password, :confirmation => true

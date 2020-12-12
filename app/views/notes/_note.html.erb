@@ -25,53 +25,82 @@
         <div class="note-title-<%= note.id %>">
             <strong><%= link_to note.title, edit_user_note_path(@current_user, note), remote: :true %></strong>
         </div>
+        <div>
+            <div class="add-line-item-<%= note.id %>" style="display: inline;">
+                <a href="/users/<%= @current_user.id %>/notes/<%= note.id %>/new_line_item" title="Add Item" data-remote="true"><i class="fa fa-plus-circle" style="font-size:24px"></i></a>
+            </div>
             <div>
-                <div class="add-line-item-<%= note.id %>" style="display: inline;">
-                    <%= button_to "Add Item",new_line_item_user_note_path(@current_user, note), method: :get, remote: :true %>
-                </div>
                 <% if !note.note_tags.empty? %>
                     <% note.note_tags.each do |note_tag|%>
-                        <strong>
-                            <%= link_to note_tag.tag.tag_name, destroy_tag_user_note_path(@current_user, note, note_tag_id: note_tag.id), data: { confirm: 'Do you want to delete this tag?' } %>,
+                        <strong class="tag"  style="background-color: antiquewhite; 
+                                                    display: inline-block; 
+                                                    border-radius: 10px;">
+                            <%= note_tag.tag.tag_name %>
+                            <%= link_to "X", destroy_tag_user_note_path(@current_user, note, note_tag_id: note_tag.id), class: 'destroy-tag hidden', data: { confirm: 'Do you want to delete this tag ?' } %>
                         </strong>
                     <% end %>
                 <% end %>
             </div>
-            <div class="list-line-items-<%= note.id %>">
-                <% note.line_items.order('created_at desc').each do |line_item| %>
-                    <%= render 'line_item', line_item: line_item, note: note %>
+        </div>
+        <div class="list-line-items-<%= note.id %>">
+            <% note.line_items.where(status: "doing").order('created_at desc').each do |line_item| %>
+                <%= render 'line_item', line_item: line_item, note: note %>
+            <% end %>
+            <% note.line_items.where(status: "done").order('created_at desc').each do |line_item| %>
+                <%= render 'line_item', line_item: line_item, note: note %>
+            <% end %>
+        </div>
+        <% if !note.note_collaborators.empty? %>
+            <div id="list-collaborator-<%= note.id %>">
+                <strong>Collaborators:</strong>
+                <p><%= note.user.name %><i> (Owner)</i></p>
+                <% note.note_collaborators.each do |note_collaborator|%>
+                    <div class='collaborator' style="display: table; 
+                                                    background-color: antiquewhite; 
+                                                    border-radius: 10px;">
+                        <%= note_collaborator.user.name%>
+                        <% if note.user.name == @current_user.name %>
+                            <%= link_to 'X', destroy_collaborator_user_notes_path(@current_user, note_collaborator_id: note_collaborator.id), 
+                            class: 'collaborator-actions hidden', data: { confirm: 'Do you want to delete this collaborator ?' } %>
+                        <% end %>
+                    </div>
                 <% end %>
             </div>
+        <% end %>
         <div>
             <div id="reminder-<%= note.id %>" style="display: inline;">
                 <% if note.reminder.nil?%>
-                    <%= button_to "Reminder", reminder_user_note_path(@current_user, note), method: :get, remote: :true  %>
+                    <a href="/users/<%= @current_user.id %>/notes/<%= note.id %>/reminder" title="Reminder" data-remote="true"><i class="fa fa-bell-o" style="font-size:22px"></i></a>
                 <% else%>
                     <%= link_to "Reminder:#{note.reminder.localtime}", reminder_user_note_path(@current_user, note), remote: :true%>
                 <% end %>
             </div>
+            <div id="collaborator-<%= note.id %>" style="display: inline;">
+                <a href="/users/<%= @current_user.id %>/notes/<%= note.id %>/new_collaborator" title="Collaborators" data-remote="true"><i class="fa fa-user-plus" style="font-size:22px"></i></a>
+            </div>
             <div class="pin" style="display: inline;">
                 <% if note.pin == "off" %>
-                    <%= button_to "Pin", pin_user_note_path(@current_user, note), method: :get %>
+                    <a href="/users/<%= @current_user.id %>/notes/<%= note.id %>/pin" title="Pin" ><i class="fa fa-thumb-tack" style="font-size:22px"></i></a>
                 <% else %>
-                    <%= button_to "Un Pin", unpin_user_note_path(@current_user, note), method: :get %>
+                    <a href="/users/<%= @current_user.id %>/notes/<%= note.id %>/unpin" title="Un Pin" ><i class="fa fa-thumb-tack" style="font-size:22px;color:black"></i></a>
                 <% end %>
             </div>
             <div class="archive" style="display: inline;">
                 <% if note.archive == "off"%>
-                    <%= button_to "Archive", archive_user_note_path(@current_user, note), method: :get %>
+                    <a href="/users/<%= @current_user.id %>/notes/<%= note.id %>/archive" title="Archive" ><i class="fa fa-archive" style="font-size:22px"></i></a>
                 <% else %>
+                    <a href="/users/<%= @current_user.id %>/notes/<%= note.id %>/unarchive" title="Un Archive" ><i class="fa fa-archive" style="font-size:22px;color:black"></i></a>
                     <%= button_to "Un Archive", unarchive_user_note_path(@current_user, note), method: :get %>
                 <% end %>
             </div>
-            <div class="color" style="display: inline;">
-                <%= render "form_color", note: note %>
-            </div>
             <div id="add-tag-<%= note.id %>" style="display: inline;">
-                <%= button_to "Add Tag", add_tag_user_note_path(@current_user, note), method: :get, remote: :true %>
+                <a href="/users/<%= @current_user.id %>/notes/<%= note.id %>/add_tag" title="Add Tag" data-remote="true"><i class="fa fa-tags" style="font-size:22px"></i></a>
             </div>
+            <form action="/users/<%= @current_user.id %>/notes/<%= note.id %>/color" style="display: inline;">
+                <input type="color" id="color-<%= note.id %>" name="color" value="<%= note.color%>">
+            </form>
             <div class="destroy" style="display: inline;">
-                <%= button_to 'Destroy', user_note_path(@current_user, note), method: :delete %>
+                <a href="/users/<%= @current_user.id %>/notes/<%= note.id %>" data-confirm="Are you sure?" data-method="delete" title="Destroy"><i class="fa fa-trash" style="font-size:22px"></i></a>
             </div>
         </div>
     </div>

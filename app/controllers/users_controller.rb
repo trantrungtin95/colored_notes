@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :authorize, only: [:new, :create]
+  skip_before_action :changed_password, only: [:edit, :update, :new, :create]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
@@ -42,11 +43,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def change_update
+    
+  end
+
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    # 
     respond_to do |format|
       if @user.update(user_params)
+        @user.update(changed_password: "true")
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -65,7 +72,19 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+    
+  def invitation
+    user = User.find_by_email(params[:email])
+    @note = Note.find(params[:note_id])
+    session[:user_id] = user.id
+    @current_user = User.find_by(id: session[:user_id])
+    if @note.note_collaborators.find_by_user_email(params[:email]).nil?
+      NoteCollaborator.create(note_id: params[:note_id], user_id: user.id, user_email: user.email)
+    end 
+    redirect_to user_notes_path(@current_user)
+  end
 
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
