@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
     skip_before_action :verify_authenticity_token
-    before_action :set_note, only: [:show, :edit, :update, :destroy]
+    before_action :set_note, only: [:show, :edit, :update, :destroy, :add_image]
 
     def index
         @notes = Note.where(user_id: params[:user_id], archive: "off").order('index asc')
@@ -29,10 +29,16 @@ class NotesController < ApplicationController
     end
 
     def update
-        if note_params[:title].strip.present?
-            @note.update(note_params)
+        if note_params[:title].present?
+            if note_params[:title].strip.present?
+                @note.update(note_params)
+            else
+                @note.destroy
+            end
         else
-            @note.destroy
+            if note_params[:images].present?
+                @note.images.attach(note_params[:images])
+            end
         end
     end
 
@@ -252,6 +258,12 @@ class NotesController < ApplicationController
 
     end
     
+    def destroy_image
+        @note = Note.find(params[:id])
+        @image = @note.images.find(params[:image_id])
+        @image.destroy
+    end
+    
 
     private
     
@@ -260,7 +272,7 @@ class NotesController < ApplicationController
     end
     
     def note_params
-        params.require(:note).permit(:title, :user_id)
+        params.require(:note).permit(:title, :user_id, images: [])
     end
      
 end

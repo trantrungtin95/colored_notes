@@ -1,5 +1,5 @@
 $('.edit-<%= @note.id%>').empty();
-$('.note-title-<%= @note.id %>').html('<%= j(render('form_edit')) %>');
+$('#note-title-<%= @note.id %>').html('<%= j(render('form_edit')) %>');
 <%# 
 $(document).ready(function () {
   $("input[name='note[title]']").focus(function () {

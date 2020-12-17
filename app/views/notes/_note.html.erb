@@ -22,7 +22,13 @@
         position: relative;
         white-space: normal;">
     <% end %>
-        <div class="note-title-<%= note.id %>">
+        <div class="images">
+            <% note.images.each do |image| %>
+                    <%= image_tag image, class: "note-images" %>
+                    <a href="/users/<%= @current_user.id %>/notes/<%= note.id %>/destroy_image?image_id=<%= image.id %>" data-confirm="Are you sure?" data-remote="true"><i class="fa fa-trash" style="font-size:22px;position:absolute;"></i></a>
+            <% end %>
+        </div> 
+        <div class="note-title" id="note-title-<%= note.id %>">
             <strong><%= link_to note.title, edit_user_note_path(@current_user, note), remote: :true %></strong>
         </div>
         <div>
@@ -101,6 +107,18 @@
             </form>
             <div class="destroy" style="display: inline;">
                 <a href="/users/<%= @current_user.id %>/notes/<%= note.id %>" data-confirm="Are you sure?" data-method="delete" title="Destroy"><i class="fa fa-trash" style="font-size:22px"></i></a>
+            </div>
+            <div class="picture" style="display: inline;">
+                <%= form_for([@current_user, note], remote: :true, :html => { id: "add-images-#{note.id}", class: "add-images"}) do |form| %>
+                    <%= form.hidden_field :user_id, value: @current_user.id %>
+                    <div class="field">
+                        <%= form.label :images, 'Image:' %>
+                        <%= form.file_field :images, multiple: true %>
+                    </div>
+                    <div class="actions">
+                        <%= form.submit("Save")%>
+                    </div>
+                <% end %>
             </div>
         </div>
     </div>

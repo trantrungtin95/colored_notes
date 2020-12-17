@@ -4,9 +4,12 @@
   <title>Colored Notes</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%# <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.9.0/jquery.mark.min.js" integrity="sha256-jcYvou95wtQNBJhqUWTA7Xv+A9ZPumT5e9nwTEmCzJs=" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://sortablejs.github.io/sortablejs/Sortable.js"></script>
@@ -50,6 +53,16 @@
       .row.content {height:auto;} 
     }
 
+    mark{
+        background: orange;
+        color: black;
+    }
+
+    .note-images {
+      width: 200px;
+      height: 200px;
+    }
+
   </style>
 </head>
 <body>
@@ -81,7 +94,7 @@
         <li>
           <form action="/users/<%= session[:user_id]%>/notes/search" style="margin-top: -13px;">
             <label for="search"></label>
-            <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="search" style="width: 300px;">
+            <input class="form-control" id='search' type="text" placeholder="Search" aria-label="Search" name="search" style="width: 300px;">
           </form>
         </li>
         <% if current_user.nil? %>

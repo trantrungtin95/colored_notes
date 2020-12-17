@@ -1,10 +1,72 @@
+<div id="user-id" data-id="<%= @current_user.id %>"></div>
+<% if !params[:search].nil?%>
+    <span class="params-search"><%= params[:search] %></span>
+<% end %>
 <p id="notice"><%= notice %></p>
 <h1>List Notes</h1>
 <hr />
-    <% if !@notes.nil?%>
-        <% @notes.each do |note|%>
-            <%= render 'note', note: note %>
+    <div class=list-notes>
+        <% if !@notes.nil?%>
+            <% @notes.each do |note|%>
+                <span>
+                    <%= render 'note', note: note %>
+                </span>
+            <% end %>
         <% end %>
-    <% end %>
+    </div>
     
 <br>
+<script>
+    var seaRch = $('.params-search').text();
+    function count(main_str, sub_str) {
+        main_str += '';
+        sub_str += '';
+
+        if (sub_str.length <= 0) 
+        {
+            return main_str.length + 1;
+        }
+
+        subStr = sub_str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return (main_str.match(new RegExp(subStr, 'gi')) || []).length;
+    };
+    $(function () {
+        $('.note-title').each(function() {
+            if (count(this.innerText, seaRch) > 0) {
+                var maRk = this.innerHTML.trim().match(new RegExp(seaRch, 'gi')),
+                    elementContent = this.innerHTML.trim().split(maRk);
+                this.innerHTML = elementContent[0] + "<mark>" + maRk + "</mark>" + elementContent[1];
+            };
+        });
+        $('.line-item').each(function() {
+            if (count(this.innerText, seaRch) > 0) {
+                var maRk = this.innerHTML.trim().match(new RegExp(seaRch, 'gi')),
+                    elementContent = this.innerHTML.trim().split(maRk);
+                this.innerHTML = elementContent[0] + "<mark>" + maRk + "</mark>" + elementContent[1];
+            };
+        });
+    });
+    $(document).on('input', "input[name='color']",  function(e){
+        var newColor = this.value,
+            noteId = this.id.split('-')[1],
+            userId = $('#user-id').data('id');
+        $.get(`/users/${userId}/notes/${noteId}/color`, { color: newColor }, function(data) {
+            location.reload();
+        } );
+    });
+    $(document).on('input', "input[name='checkbox-line-item']", function(e){
+        var lineItemId = this.id.split('-')[1],
+            userId = $('#user-id').data('id');
+        $.get(`/users/${userId}/notes/status_line_item`, {line_item_id: lineItemId}, function(data) {
+            location.reload();
+        });
+    });
+    $(document).on('focusout', "input[name='note[title]']",  function(e){
+        form = document.querySelector('.edit_note');
+        form.dispatchEvent(new Event('submit', {bubbles: true}));
+    });
+    $(document).on('focusout', "textarea[name='content']",  function(e){
+        form = document.querySelector('.edit_line_item');
+        form.dispatchEvent(new Event('submit', {bubbles: true}));
+    });
+</script>

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     get :edit_password, on: :member
     get :update_password, on: :member
     resources :notes do 
+      get :destroy_image, on: :member
       get :status_line_item, on: :collection
       get :new_line_item, on: :member
       post :add_line_item, on: :member
