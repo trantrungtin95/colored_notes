@@ -1,8 +1,5 @@
 <p id="notice"><%= notice %></p>
 <h1>Archive</h1>
-<div id="new-note">
-    <%= link_to 'New Note', new_user_note_path(@current_user), remote: :true%>
-</div>
 <hr />
 <div class="list-notes" style="height: 480px; overflow: scroll;">
     <% if !@notes.nil?%>

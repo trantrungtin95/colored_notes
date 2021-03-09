@@ -43,7 +43,7 @@ Rails.application.routes.draw do
     post 'login' => :create
     get 'logout' => :destroy
   end
-
+  
   root :to => 'admin#index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
